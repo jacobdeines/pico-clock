@@ -8,8 +8,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 pico_sdk_init()
 
-include(example_auto_set_url.cmake)
-
 add_executable(pico-clock
 	pico-clock.c
 	)
