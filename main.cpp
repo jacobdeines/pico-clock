@@ -1,30 +1,17 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 #include "pico/binary_info.h"
 
-#define DEFAULT_LCD_ADDR 0x72
-#define DEFAULT_LCD_ROWS 4
-#define DEFAULT_LCD_COLS 20
+#include "Terminal.h"
+#include "LCD.h"
 
-static const char *resetString = "|-";
-
-static const char *message = "Test 123 ";
-
-void lcd_write_byte(uint8_t val)
+uint32_t millis_now()
 {
-    i2c_write_blocking(i2c_default, DEFAULT_LCD_ADDR, &val, 1, false);
-}
-
-void lcd_string(const char *s)
-{
-    while (*s)
-    {
-        lcd_write_byte(*s++);
-        sleep_us(50);
-    }
+   return to_ms_since_boot(get_absolute_time());
 }
 
 int main()
@@ -43,19 +30,44 @@ int main()
 
     sleep_ms(1);
 
-    lcd_string(resetString);
+    LCD lcd;
+    Terminal terminal;
+
+    lcd.Reset();
+    terminal.PrintWelcome();
+    terminal.PrintMenu();
+
+    char input[64] = "";
 
     while(1)
     {
-        gpio_put(25, 1);
-        printf("LED ON!\n");
-        sleep_ms(1000);
+        int16_t ch = getchar_timeout_us(0);
+        while (ch != PICO_ERROR_TIMEOUT)
+        {
+            if (255 != ch)
+            {
+                // Terminal
+                if ('\r' == ch)
+                {
+                    printf("%c", '\n');
+                }
+                else
+                {
+                    printf("%c", ch);
+                }
 
-        gpio_put(25, 0);
-        printf("LED OFF!\n");
-        sleep_ms(1000);
+                // LCD
+                lcd.WriteByte((uint8_t)ch);
+            }
+            ch = getchar_timeout_us(0);
+        }
 
-        lcd_string(message);
+        // Blink non-blocking (use timestamps, not sleep)
+        //gpio_put(25, 1);
+        //gpio_put(25, 0);
+
+        // Print time to lcd on change
+        //lcd_string(message);
     }
 }
 

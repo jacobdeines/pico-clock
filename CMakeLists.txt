@@ -9,7 +9,11 @@ set(CMAKE_CXX_STANDARD 17)
 pico_sdk_init()
 
 add_executable(pico-clock
-	pico-clock.c
+	main.cpp
+	Terminal.cpp
+	Terminal.h
+	LCD.cpp
+	LCD.h
 	)
 
 target_link_libraries(pico-clock pico_stdlib hardware_i2c)
