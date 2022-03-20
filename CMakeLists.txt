@@ -14,9 +14,13 @@ add_executable(pico-clock
 	Terminal.h
 	LCD.cpp
 	LCD.h
+	Clock.cpp
+	Clock.h
+	SystemTiming.cpp
+	SystemTiming.h
 	)
 
-target_link_libraries(pico-clock pico_stdlib hardware_i2c)
+target_link_libraries(pico-clock pico_stdlib hardware_i2c hardware_rtc)
 
 pico_enable_stdio_usb(pico-clock 0)
 pico_enable_stdio_uart(pico-clock 1)

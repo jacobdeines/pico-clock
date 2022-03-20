@@ -4,6 +4,10 @@
 class Terminal
 {
 public:
+    static Terminal terminal;
+
+    void Init();
+    void Update();
     void PrintWelcome();
     void PrintMenu();
 };
