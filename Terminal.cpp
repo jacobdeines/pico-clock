@@ -40,8 +40,8 @@ void Terminal::PrintWelcome()
 void Terminal::PrintMenu()
 {
     printf("-------- MENU --------\n");
-    printf("1 - Set Time and Date\n");
-    printf("2 - Show Time and Date\n");
+    printf("1 - Set Time\n");
+    printf("2 - Set Date\n");
     printf("3 - Set Message\n");
     printf("4 - Set Color\n");
 }

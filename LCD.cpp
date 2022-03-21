@@ -106,3 +106,50 @@ void LCD::PrintStringAtLocation(uint8_t row, uint8_t col, char *s)
         }
     }
 }
+
+void LCD::PrintCharAtLocation(uint8_t row, uint8_t col, char s)
+{
+    if ((row < LCD_ROWS) &&
+        (col < LCD_COLS))
+    {
+        switch (row)
+        {
+            case 0:
+            {
+                WriteByte(0xFE);
+                WriteByte(128 + ROW_0_START + col);
+                WriteByte(s);
+            }
+            break;
+
+            case 1:
+            {
+                WriteByte(0xFE);
+                WriteByte(128 + ROW_1_START + col);
+                WriteByte(s);
+            }
+            break;
+
+            case 2:
+            {
+                WriteByte(0xFE);
+                WriteByte(128 + ROW_2_START + col);
+                WriteByte(s);
+            }
+            break;
+
+            case 3:
+            {
+                WriteByte(0xFE);
+                WriteByte(128 + ROW_3_START + col);
+                WriteByte(s);
+            }
+            break;
+
+            default:
+            {
+            }
+            break;
+        }
+    }
+}

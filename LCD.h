@@ -28,6 +28,8 @@ public:
 
     void PrintStringAtLocation(uint8_t row, uint8_t col, char *s);
 
+    void PrintCharAtLocation(uint8_t row, uint8_t col, char s);
+
 private:
     static const char *RESET;
 };
