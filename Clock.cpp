@@ -195,6 +195,12 @@ void Clock::Update()
         sprintf(buf, "%02u", mSecond);
         LCD::lcd.PrintCharAtLocation(0, 6, buf[0]);
         LCD::lcd.PrintCharAtLocation(0, 7, buf[1]);
+        LCD::lcd.PrintCharAtLocation(0, 2, ':');
+        LCD::lcd.PrintCharAtLocation(0, 5, ':');
+        LCD::lcd.PrintCharAtLocation(0, 8, ' ');
+        LCD::lcd.PrintCharAtLocation(1, 2, '/');
+        LCD::lcd.PrintCharAtLocation(1, 5, '/');
+        LCD::lcd.PrintCharAtLocation(1, 11, '-');
     }
 }
 
