@@ -51,34 +51,23 @@ void Clock::Init()
 
 void Clock::Update()
 {
-    char buf[5] = "";
+    char buf[64] = "";
 
     rtc_get_datetime(&datetime_struct);
 
     if (datetime_struct.year != mYear)
     {
         mYear = datetime_struct.year;
-        sprintf(buf, "%04u", mYear);
-        LCD::lcd.PrintCharAtLocation(1, 6, buf[0]);
-        LCD::lcd.PrintCharAtLocation(1, 7, buf[1]);
-        LCD::lcd.PrintCharAtLocation(1, 8, buf[2]);
-        LCD::lcd.PrintCharAtLocation(1, 9, buf[3]);
     }
 
     if (datetime_struct.month != mMonth)
     {
         mMonth = datetime_struct.month;
-        sprintf(buf, "%02u", mMonth);
-        LCD::lcd.PrintCharAtLocation(1, 0, buf[0]);
-        LCD::lcd.PrintCharAtLocation(1, 1, buf[1]);
     }
 
     if (datetime_struct.day != mDay)
     {
         mDay = datetime_struct.day;
-        sprintf(buf, "%02u", mDay);
-        LCD::lcd.PrintCharAtLocation(1, 3, buf[0]);
-        LCD::lcd.PrintCharAtLocation(1, 4, buf[1]);
     }
 
     if (datetime_struct.dotw != mDayOfWeek)
@@ -88,60 +77,68 @@ void Clock::Update()
         {
             case 0:
             {
-                sprintf(buf, "SUN");
+                sprintf(buf, "%02u/%02u/%04u - SUN", mMonth, mDay, mYear);
             }
             break;
 
             case 1:
             {
-                sprintf(buf, "MON");
+                sprintf(buf, "%02u/%02u/%04u - MON", mMonth, mDay, mYear);
             }
             break;
 
             case 2:
             {
-                sprintf(buf, "TUE");
+                sprintf(buf, "%02u/%02u/%04u - TUE", mMonth, mDay, mYear);
             }
             break;
 
             case 3:
             {
-                sprintf(buf, "WED");
+                sprintf(buf, "%02u/%02u/%04u - WED", mMonth, mDay, mYear);
             }
             break;
 
             case 4:
             {
-                sprintf(buf, "THU");
+                sprintf(buf, "%02u/%02u/%04u - THU", mMonth, mDay, mYear);
             }
             break;
 
             case 5:
             {
-                sprintf(buf, "FRI");
+                sprintf(buf, "%02u/%02u/%04u - FRI", mMonth, mDay, mYear);
             }
             break;
 
             case 6:
             {
-                sprintf(buf, "SAT");
+                sprintf(buf, "%02u/%02u/%04u - SAT", mMonth, mDay, mYear);
             }
             break;
 
             default:
             {
-                sprintf(buf, "ERR");
+                sprintf(buf, "%02u/%02u/%04u - ERR", mMonth, mDay, mYear);
             }
             break;
         }
-        LCD::lcd.PrintCharAtLocation(1, 13, buf[0]);
-        LCD::lcd.PrintCharAtLocation(1, 14, buf[1]);
-        LCD::lcd.PrintCharAtLocation(1, 15, buf[2]);
+        LCD::lcd.PrintStringAtLocation(1, 0, buf);
     }
 
     if (datetime_struct.hour != mHour)
     {
         mHour = datetime_struct.hour;
+    }
+
+    if (datetime_struct.min != mMinute)
+    {
+        mMinute = datetime_struct.min;
+    }
+
+    if (datetime_struct.sec != mSecond)
+    {
+        mSecond = datetime_struct.sec;
 
         uint8_t lHour = 0;
         bool pm = false;
@@ -164,43 +161,16 @@ void Clock::Update()
             lHour = mHour - 12;
             pm = true;
         }
-        sprintf(buf, "%02u", lHour);
-        LCD::lcd.PrintCharAtLocation(0, 0, buf[0]);
-        LCD::lcd.PrintCharAtLocation(0, 1, buf[1]);
 
         if (true == pm)
         {
-            sprintf(buf, "PM");
+            sprintf(buf, "%02u:%02u:%02u PM", lHour, mMinute, mSecond);
         }
         else
         {
-            sprintf(buf, "AM");
+            sprintf(buf, "%02u:%02u:%02u AM", lHour, mMinute, mSecond);
         }
-        
-        LCD::lcd.PrintCharAtLocation(0, 9, buf[0]);
-        LCD::lcd.PrintCharAtLocation(0, 10, buf[1]);
-    }
-
-    if (datetime_struct.min != mMinute)
-    {
-        mMinute = datetime_struct.min;
-        sprintf(buf, "%02u", mMinute);
-        LCD::lcd.PrintCharAtLocation(0, 3, buf[0]);
-        LCD::lcd.PrintCharAtLocation(0, 4, buf[1]);
-    }
-
-    if (datetime_struct.sec != mSecond)
-    {
-        mSecond = datetime_struct.sec;
-        sprintf(buf, "%02u", mSecond);
-        LCD::lcd.PrintCharAtLocation(0, 6, buf[0]);
-        LCD::lcd.PrintCharAtLocation(0, 7, buf[1]);
-        LCD::lcd.PrintCharAtLocation(0, 2, ':');
-        LCD::lcd.PrintCharAtLocation(0, 5, ':');
-        LCD::lcd.PrintCharAtLocation(0, 8, ' ');
-        LCD::lcd.PrintCharAtLocation(1, 2, '/');
-        LCD::lcd.PrintCharAtLocation(1, 5, '/');
-        LCD::lcd.PrintCharAtLocation(1, 11, '-');
+        LCD::lcd.PrintStringAtLocation(0, 0, buf);
     }
 }
 

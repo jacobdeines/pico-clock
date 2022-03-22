@@ -71,6 +71,7 @@ void LCD::PrintStringAtLocation(uint8_t row, uint8_t col, char *s)
             {
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_0_START + col);
+                sleep_us(100);
                 PrintString(s);
             }
             break;
@@ -79,6 +80,7 @@ void LCD::PrintStringAtLocation(uint8_t row, uint8_t col, char *s)
             {
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_1_START + col);
+                sleep_us(100);
                 PrintString(s);
             }
             break;
@@ -87,6 +89,7 @@ void LCD::PrintStringAtLocation(uint8_t row, uint8_t col, char *s)
             {
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_2_START + col);
+                sleep_us(100);
                 PrintString(s);
             }
             break;
@@ -95,6 +98,7 @@ void LCD::PrintStringAtLocation(uint8_t row, uint8_t col, char *s)
             {
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_3_START + col);
+                sleep_us(100);
                 PrintString(s);
             }
             break;
@@ -104,6 +108,7 @@ void LCD::PrintStringAtLocation(uint8_t row, uint8_t col, char *s)
             }
             break;
         }
+        sleep_us(100);
     }
 }
 
@@ -118,6 +123,7 @@ void LCD::PrintCharAtLocation(uint8_t row, uint8_t col, char s)
             {
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_0_START + col);
+                sleep_us(100);
                 WriteByte(s);
             }
             break;
@@ -126,6 +132,7 @@ void LCD::PrintCharAtLocation(uint8_t row, uint8_t col, char s)
             {
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_1_START + col);
+                sleep_us(100);
                 WriteByte(s);
             }
             break;
@@ -134,6 +141,7 @@ void LCD::PrintCharAtLocation(uint8_t row, uint8_t col, char s)
             {
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_2_START + col);
+                sleep_us(100);
                 WriteByte(s);
             }
             break;
@@ -142,6 +150,7 @@ void LCD::PrintCharAtLocation(uint8_t row, uint8_t col, char s)
             {
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_3_START + col);
+                sleep_us(100);
                 WriteByte(s);
             }
             break;
@@ -151,5 +160,6 @@ void LCD::PrintCharAtLocation(uint8_t row, uint8_t col, char s)
             }
             break;
         }
+        sleep_us(50);
     }
 }
