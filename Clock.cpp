@@ -40,12 +40,6 @@ void Clock::Init()
     rtc_init();
     rtc_set_datetime(&datetime_struct);
 
-    LCD::lcd.PrintCharAtLocation(0, 2, ':');
-    LCD::lcd.PrintCharAtLocation(0, 5, ':');
-    LCD::lcd.PrintCharAtLocation(1, 2, '/');
-    LCD::lcd.PrintCharAtLocation(1, 5, '/');
-    LCD::lcd.PrintCharAtLocation(1, 11, '-');
-
     Update();
 }
 
@@ -73,57 +67,6 @@ void Clock::Update()
     if (datetime_struct.dotw != mDayOfWeek)
     {
         mDayOfWeek = datetime_struct.dotw;
-        switch (mDayOfWeek)
-        {
-            case 0:
-            {
-                sprintf(buf, "%02u/%02u/%04u - SUN", mMonth, mDay, mYear);
-            }
-            break;
-
-            case 1:
-            {
-                sprintf(buf, "%02u/%02u/%04u - MON", mMonth, mDay, mYear);
-            }
-            break;
-
-            case 2:
-            {
-                sprintf(buf, "%02u/%02u/%04u - TUE", mMonth, mDay, mYear);
-            }
-            break;
-
-            case 3:
-            {
-                sprintf(buf, "%02u/%02u/%04u - WED", mMonth, mDay, mYear);
-            }
-            break;
-
-            case 4:
-            {
-                sprintf(buf, "%02u/%02u/%04u - THU", mMonth, mDay, mYear);
-            }
-            break;
-
-            case 5:
-            {
-                sprintf(buf, "%02u/%02u/%04u - FRI", mMonth, mDay, mYear);
-            }
-            break;
-
-            case 6:
-            {
-                sprintf(buf, "%02u/%02u/%04u - SAT", mMonth, mDay, mYear);
-            }
-            break;
-
-            default:
-            {
-                sprintf(buf, "%02u/%02u/%04u - ERR", mMonth, mDay, mYear);
-            }
-            break;
-        }
-        LCD::lcd.PrintStringAtLocation(1, 0, buf);
     }
 
     if (datetime_struct.hour != mHour)
@@ -164,13 +107,65 @@ void Clock::Update()
 
         if (true == pm)
         {
-            sprintf(buf, "%02u:%02u:%02u PM", lHour, mMinute, mSecond);
+            sprintf(buf, "%02u:%02u:%02u PM         ", lHour, mMinute, mSecond);
         }
         else
         {
-            sprintf(buf, "%02u:%02u:%02u AM", lHour, mMinute, mSecond);
+            sprintf(buf, "%02u:%02u:%02u AM         ", lHour, mMinute, mSecond);
         }
-        LCD::lcd.PrintStringAtLocation(0, 0, buf);
+        LCD::lcd.PrintStringLen(buf, 20, false);
+
+        switch (mDayOfWeek)
+        {
+            case 0:
+            {
+                sprintf(buf, "%02u/%02u/%04u - SUN    ", mMonth, mDay, mYear);
+            }
+            break;
+
+            case 1:
+            {
+                sprintf(buf, "%02u/%02u/%04u - MON    ", mMonth, mDay, mYear);
+            }
+            break;
+
+            case 2:
+            {
+                sprintf(buf, "%02u/%02u/%04u - TUE    ", mMonth, mDay, mYear);
+            }
+            break;
+
+            case 3:
+            {
+                sprintf(buf, "%02u/%02u/%04u - WED    ", mMonth, mDay, mYear);
+            }
+            break;
+
+            case 4:
+            {
+                sprintf(buf, "%02u/%02u/%04u - THU    ", mMonth, mDay, mYear);
+            }
+            break;
+
+            case 5:
+            {
+                sprintf(buf, "%02u/%02u/%04u - FRI    ", mMonth, mDay, mYear);
+            }
+            break;
+
+            case 6:
+            {
+                sprintf(buf, "%02u/%02u/%04u - SAT    ", mMonth, mDay, mYear);
+            }
+            break;
+
+            default:
+            {
+                sprintf(buf, "%02u/%02u/%04u - ERR    ", mMonth, mDay, mYear);
+            }
+            break;
+        }
+        LCD::lcd.PrintStringLen(buf, 20, true);
     }
 }
 

@@ -22,13 +22,17 @@ public:
 
     void WriteByte(uint8_t val);
 
-    void PrintString(const char *s);
+    void PrintString(const char *s, bool reset);
 
-    void SetColor(uint8_t r, uint8_t g, uint8_t b);
+    void PrintStringLen(const char *s, uint8_t len, bool reset);
 
     void PrintStringAtLocation(uint8_t row, uint8_t col, char *s);
 
     void PrintCharAtLocation(uint8_t row, uint8_t col, char s);
+
+    void SetCursorLocation(uint8_t row, uint8_t col);
+
+    void SetColor(uint8_t r, uint8_t g, uint8_t b);
 
 private:
     static const char *RESET;

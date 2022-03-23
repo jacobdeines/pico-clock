@@ -10,7 +10,8 @@ const char *LCD::RESET = "|-";
 
 void LCD::Init()
 {
-    i2c_init(i2c_default, 115200);
+    //i2c_init(i2c_default, 115200);
+    i2c_init(i2c_default, 100000);
     gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
     gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
     gpio_pull_up(PICO_DEFAULT_I2C_SDA_PIN);
@@ -23,7 +24,7 @@ void LCD::Init()
 
     sleep_ms(1);
 
-    PrintString("Starting up...");
+    PrintString("Starting up...", false);
 
     sleep_ms(1);
 
@@ -34,20 +35,39 @@ void LCD::Init()
 
 void LCD::Reset()
 {
-    PrintString(RESET);
+    PrintStringLen(RESET, 2, true);
 }
 
 void LCD::WriteByte(uint8_t val)
 {
     i2c_write_blocking(i2c_default, DEFAULT_LCD_ADDR, &val, 1, false);
-    sleep_us(50);
+    sleep_us(200);
 }
 
-void LCD::PrintString(const char *s)
+void LCD::PrintString(const char *s, bool reset)
 {
     while (*s)
     {
         WriteByte(*s++);
+    }
+    sleep_us(500);
+    if (true == reset)
+    {
+        WriteByte(0xFE);
+        WriteByte(128 + ROW_0_START + 0);
+        sleep_us(500);
+    }
+}
+
+void LCD::PrintStringLen(const char *s, uint8_t len, bool reset)
+{
+    i2c_write_blocking(i2c_default, DEFAULT_LCD_ADDR, (uint8_t *)s, len, false);
+    sleep_us(500);
+    if (true == reset)
+    {
+        WriteByte(0xFE);
+        WriteByte(128 + ROW_0_START + 0);
+        sleep_us(500);
     }
 }
 
@@ -72,7 +92,7 @@ void LCD::PrintStringAtLocation(uint8_t row, uint8_t col, char *s)
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_0_START + col);
                 sleep_us(100);
-                PrintString(s);
+                PrintString(s, false);
             }
             break;
 
@@ -81,7 +101,7 @@ void LCD::PrintStringAtLocation(uint8_t row, uint8_t col, char *s)
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_1_START + col);
                 sleep_us(100);
-                PrintString(s);
+                PrintString(s, false);
             }
             break;
 
@@ -90,7 +110,7 @@ void LCD::PrintStringAtLocation(uint8_t row, uint8_t col, char *s)
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_2_START + col);
                 sleep_us(100);
-                PrintString(s);
+                PrintString(s, false);
             }
             break;
 
@@ -99,7 +119,7 @@ void LCD::PrintStringAtLocation(uint8_t row, uint8_t col, char *s)
                 WriteByte(0xFE);
                 WriteByte(128 + ROW_3_START + col);
                 sleep_us(100);
-                PrintString(s);
+                PrintString(s, false);
             }
             break;
 
@@ -108,7 +128,6 @@ void LCD::PrintStringAtLocation(uint8_t row, uint8_t col, char *s)
             }
             break;
         }
-        sleep_us(100);
     }
 }
 
@@ -160,6 +179,50 @@ void LCD::PrintCharAtLocation(uint8_t row, uint8_t col, char s)
             }
             break;
         }
-        sleep_us(50);
     }
+}
+
+void LCD::SetCursorLocation(uint8_t row, uint8_t col)
+{
+    if ((row < LCD_ROWS) &&
+        (col < LCD_COLS))
+    {
+        switch (row)
+        {
+            case 0:
+            {
+                WriteByte(0xFE);
+                WriteByte(128 + ROW_0_START + col);
+            }
+            break;
+
+            case 1:
+            {
+                WriteByte(0xFE);
+                WriteByte(128 + ROW_1_START + col);
+            }
+            break;
+
+            case 2:
+            {
+                WriteByte(0xFE);
+                WriteByte(128 + ROW_2_START + col);
+            }
+            break;
+
+            case 3:
+            {
+                WriteByte(0xFE);
+                WriteByte(128 + ROW_3_START + col);
+                
+            }
+            break;
+
+            default:
+            {
+            }
+            break;
+        }
+    }
+    sleep_us(500);
 }
