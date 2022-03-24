@@ -1,5 +1,6 @@
 #include "Clock.h"
 
+#include "DS3231.h"
 #include "LCD.h"
 
 #include "hardware/i2c.h"
@@ -33,8 +34,19 @@ void Clock::Init()
             .sec   = 0
     };
 
-    // Get initial date/time from external RTC
-    // TODO: jdd
+    sleep_ms(500);
+
+    DS3231::ds3231.ReadDateTime();
+
+    sleep_ms(5);
+
+    datetime_struct.year = DS3231::ds3231.GetYear();
+    datetime_struct.month = DS3231::ds3231.GetMonth();
+    datetime_struct.day = DS3231::ds3231.GetDay();
+    datetime_struct.dotw = DS3231::ds3231.GetDayOfWeek();
+    datetime_struct.hour = DS3231::ds3231.GetHour();
+    datetime_struct.min = DS3231::ds3231.GetMinute();
+    datetime_struct.sec = DS3231::ds3231.GetSecond();
 
     // Start the on-board RTC and set date/time
     rtc_init();
@@ -176,7 +188,7 @@ void Clock::SetDate(uint16_t aYear, uint8_t aMonth, uint8_t aDay, uint8_t aDayOf
     datetime_struct.day = aDay;
     datetime_struct.dotw = aDayOfWeek;
 
-    // TODO: jdd - Set new date on external RTC
+    DS3231::ds3231.SetDate(aYear, aMonth, aDay, aDayOfWeek);
 
     rtc_set_datetime(&datetime_struct);
 }
@@ -187,7 +199,7 @@ void Clock::SetTime(uint8_t aHour, uint8_t aMinute, uint8_t aSecond)
     datetime_struct.min = aMinute;
     datetime_struct.sec = aSecond;
 
-    // TODO: jdd - Set new time on external RTC
+    DS3231::ds3231.SetTime(aHour, aMinute, aSecond);
 
     rtc_set_datetime(&datetime_struct);
 }

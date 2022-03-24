@@ -1,4 +1,5 @@
 #include "Clock.h"
+#include "DS3231.h"
 #include "LCD.h"
 #include "SystemTiming.h"
 #include "Terminal.h"
@@ -23,6 +24,15 @@ int main()
 
     gpio_init(25);
     gpio_set_dir(25, GPIO_OUT);
+
+    i2c_init(i2c_default, 100000);
+    gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
+    gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
+    gpio_pull_up(PICO_DEFAULT_I2C_SDA_PIN);
+    gpio_pull_up(PICO_DEFAULT_I2C_SCL_PIN);
+    bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
+
+    sleep_ms(5);
 
     LCD::lcd.Init();
     LCD::lcd.SetColor(0, 255, 255);

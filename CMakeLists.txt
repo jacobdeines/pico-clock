@@ -18,6 +18,8 @@ add_executable(pico-clock
 	Clock.h
 	SystemTiming.cpp
 	SystemTiming.h
+	DS3231.cpp
+	DS3231.h
 	)
 
 target_link_libraries(pico-clock pico_stdlib hardware_i2c hardware_rtc)
