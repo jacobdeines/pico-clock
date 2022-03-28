@@ -43,7 +43,7 @@ void Clock::Init()
     datetime_struct.year = DS3231::ds3231.GetYear();
     datetime_struct.month = DS3231::ds3231.GetMonth();
     datetime_struct.day = DS3231::ds3231.GetDay();
-    datetime_struct.dotw = DS3231::ds3231.GetDayOfWeek();
+    datetime_struct.dotw = DS3231::ds3231.GetDayOfWeek() - 1;
     datetime_struct.hour = DS3231::ds3231.GetHour();
     datetime_struct.min = DS3231::ds3231.GetMinute();
     datetime_struct.sec = DS3231::ds3231.GetSecond();
@@ -119,65 +119,65 @@ void Clock::Update()
 
         if (true == pm)
         {
-            sprintf(buf, "%02u:%02u:%02u PM         ", lHour, mMinute, mSecond);
+            sprintf(buf, "%02u:%02u:%02u PM     ", lHour, mMinute, mSecond);
         }
         else
         {
-            sprintf(buf, "%02u:%02u:%02u AM         ", lHour, mMinute, mSecond);
+            sprintf(buf, "%02u:%02u:%02u AM     ", lHour, mMinute, mSecond);
         }
-        LCD::lcd.PrintStringLen(buf, 20, false);
+        LCD::lcd.PrintStringLen(buf, 16, false);
 
         switch (mDayOfWeek)
         {
             case 0:
             {
-                sprintf(buf, "%02u/%02u/%04u - SUN    ", mMonth, mDay, mYear);
+                sprintf(buf, "%02u/%02u/%04u - SUN", mMonth, mDay, mYear);
             }
             break;
 
             case 1:
             {
-                sprintf(buf, "%02u/%02u/%04u - MON    ", mMonth, mDay, mYear);
+                sprintf(buf, "%02u/%02u/%04u - MON", mMonth, mDay, mYear);
             }
             break;
 
             case 2:
             {
-                sprintf(buf, "%02u/%02u/%04u - TUE    ", mMonth, mDay, mYear);
+                sprintf(buf, "%02u/%02u/%04u - TUE", mMonth, mDay, mYear);
             }
             break;
 
             case 3:
             {
-                sprintf(buf, "%02u/%02u/%04u - WED    ", mMonth, mDay, mYear);
+                sprintf(buf, "%02u/%02u/%04u - WED", mMonth, mDay, mYear);
             }
             break;
 
             case 4:
             {
-                sprintf(buf, "%02u/%02u/%04u - THU    ", mMonth, mDay, mYear);
+                sprintf(buf, "%02u/%02u/%04u - THU", mMonth, mDay, mYear);
             }
             break;
 
             case 5:
             {
-                sprintf(buf, "%02u/%02u/%04u - FRI    ", mMonth, mDay, mYear);
+                sprintf(buf, "%02u/%02u/%04u - FRI", mMonth, mDay, mYear);
             }
             break;
 
             case 6:
             {
-                sprintf(buf, "%02u/%02u/%04u - SAT    ", mMonth, mDay, mYear);
+                sprintf(buf, "%02u/%02u/%04u - SAT", mMonth, mDay, mYear);
             }
             break;
 
             default:
             {
-                sprintf(buf, "%02u/%02u/%04u - ERR    ", mMonth, mDay, mYear);
+                sprintf(buf, "%02u/%02u/%04u - ERR", mMonth, mDay, mYear);
             }
             break;
         }
-        LCD::lcd.PrintStringLen(buf, 20, true);
+        LCD::lcd.PrintStringLen(buf, 16, true);
     }
 }
 
@@ -188,7 +188,7 @@ void Clock::SetDate(uint16_t aYear, uint8_t aMonth, uint8_t aDay, uint8_t aDayOf
     datetime_struct.day = aDay;
     datetime_struct.dotw = aDayOfWeek;
 
-    DS3231::ds3231.SetDate(aYear, aMonth, aDay, aDayOfWeek);
+    DS3231::ds3231.SetDate(aYear, aMonth, aDay, aDayOfWeek + 1);
 
     rtc_set_datetime(&datetime_struct);
 }

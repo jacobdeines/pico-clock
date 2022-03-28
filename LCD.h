@@ -4,8 +4,8 @@
 #include <stdint.h>
 
 #define DEFAULT_LCD_ADDR 0x72
-#define LCD_ROWS 4
-#define LCD_COLS 20
+#define LCD_ROWS 2
+#define LCD_COLS 16
 
 #define ROW_0_START 0
 #define ROW_1_START 64
